@@ -67,3 +67,18 @@ Keep the current Hangman board in place between guesses instead of appending a n
 
 ### Verification
 CLI tests verify Live creation and updates, invalid-guess feedback, final-result ordering, and readable captured output. The implementation uses Rich's normal terminal Live rendering without an alternate-screen mode.
+
+## Follow-up: Hot-Pink TUI Palette (#5)
+
+### Intent and goals
+Give the Hangman TUI a hot-pink visual identity while preserving readable text and distinct success/error cues. Use named palette constants in the existing Rich presentation layer and apply them consistently to the board, player/turn/word text, drawing, and feedback.
+
+### Non-goals and constraints
+Do not change layout, prompts, game rules, dependencies, or non-UI behavior. Keep the change in `src/main.py`.
+
+### Approaches
+- **Replace color literals in place:** smallest edit, but repeated colors remain easy to change inconsistently.
+- **Named palette constants (chosen):** centralize the small palette and reuse it across the UI for consistency and easier review.
+
+### Proposed color behavior
+Use hot pink (`#ff69b4`) for the board border/title and active player, and light pink (`#ffb6c1`) for turn and word emphasis. Use error pink (`#ff5c8a`) for the drawing and invalid/loss feedback, while retaining success lime (`#d9ff70`). Keep muted text (`#a4b8b2`) and player separators (`#6f8983`) unchanged.
