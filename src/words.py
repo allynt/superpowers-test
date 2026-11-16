@@ -24,7 +24,9 @@ WORDS: tuple[str, ...] = (
     "window",
     "yellow",
 )
+"""Curated words that can be used as Hangman answers."""
 
 
 def choose_word() -> str:
+    """Return a randomly selected word from the curated list."""
     return random.choice(WORDS)

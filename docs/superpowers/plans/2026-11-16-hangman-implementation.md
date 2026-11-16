@@ -185,7 +185,6 @@ Expected: all selected tests pass, including the Live update test and existing w
 
 Run: `uv run --python 3.13 pytest -q`
 Expected: all game, word-selection, and CLI tests pass.
-
 Verification:
 - The new Live lifecycle test failed before implementation because no Live display was created.
 - `uv run --python 3.13 pytest -q tests/test_cli.py tests/test_game.py` — 14 passed.
