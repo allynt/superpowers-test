@@ -1,9 +1,13 @@
+import sys
 from typing import Final
 
 import click
+from rich.cells import cell_len
 from rich.console import Console, Group
-from rich.live import Live
+from rich.control import Control
+from rich.live_render import LiveRender
 from rich.panel import Panel
+from rich.segment import ControlType
 from rich.text import Text
 
 from game import GameState
@@ -71,6 +75,29 @@ def _render_game(game: GameState, wrong_guesses: list[str]) -> Panel:
     )
 
 
+def _prompt_guess(console: Console, board: Panel, prompt: str) -> str:
+    """Keep the board visible during input, retaining only completed prompts."""
+    display = LiveRender(board)
+    while True:
+        # Reserve space for the prompt and the terminal's echoed newline.
+        console.print(display, height=max(1, console.height - 2))
+        try:
+            guess = console.input(Text(f"{prompt}: "))
+        except (EOFError, KeyboardInterrupt) as error:
+            raise click.Abort() from error
+
+        transcript = f"{prompt}: {guess}"
+        prompt_lines = max(1, (cell_len(transcript.expandtabs()) + console.width - 1) // console.width)
+        lines = min(console.height - 1, display.last_render_height + prompt_lines)
+        console.control(Control(
+            ControlType.CARRIAGE_RETURN,
+            *((ControlType.CURSOR_UP, 1), (ControlType.ERASE_IN_LINE, 2)) * lines,
+        ))
+        console.print(Text(transcript))
+        if guess:
+            return guess
+
+
 @click.command()
 @click.option("--player", "players", multiple=True, required=True, metavar="NAME")
 def main(players: tuple[str, ...]) -> None:
@@ -78,10 +105,15 @@ def main(players: tuple[str, ...]) -> None:
     game = GameState(choose_word(), players)
     console = Console()
     wrong_guesses: list[str] = []
+    interactive = console.is_interactive and sys.stdin.isatty()
 
-    with Live(_render_game(game, wrong_guesses), console=console) as live:
+    try:
         while not game.finished:
-            guess = click.prompt(f"{game.current_player}'s guess", type=str)
+            prompt = f"{game.current_player}'s guess"
+            guess = (
+                _prompt_guess(console, _render_game(game, wrong_guesses), prompt)
+                if interactive else click.prompt(prompt, type=str)
+            )
             result = game.submit_guess(guess)
 
             if result.status == "invalid":
@@ -91,7 +123,15 @@ def main(players: tuple[str, ...]) -> None:
             if result.status == "incorrect":
                 wrong_guesses.append(result.guess)
 
-            live.update(_render_game(game, wrong_guesses))
+    finally:
+        if not interactive:
+            console.print(_render_game(game, wrong_guesses))
+
+    if interactive:
+        console.print(
+            LiveRender(_render_game(game, wrong_guesses)),
+            height=max(1, console.height - 2),
+        )
 
     if game.winner is not None:
         console.print(Text(f"{game.winner} wins! The word was {game.word}.", style=f"bold {SUCCESS_LIME}"))
