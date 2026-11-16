@@ -178,5 +178,6 @@ pyrightconfig.json
 # LOCAL MODIFICATIONS
 
 .env
+.superpowers/
 _global_skills/
 !.python-version
