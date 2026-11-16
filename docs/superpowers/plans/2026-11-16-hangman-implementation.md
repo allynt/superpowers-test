@@ -209,20 +209,20 @@ Verification:
 - Error styling should remain visibly distinct from success styling; retain pink-red error and lime success colors.
 - Existing captured output and game behavior must remain unchanged apart from color.
 
-- [x] **Step 1: Add a rendered-palette test**
+- [ ] **Step 1: Add a rendered-palette test**
 
 Add `test_game_panel_uses_hot_pink_palette` to `tests/test_cli.py`, importing `StringIO` and `GameState` from `game`. Render `_render_game(GameState("cat", ("Solo",)), [])` through a `Console` backed by `StringIO`, with `force_terminal=True` and `color_system="truecolor"`. Assert output contains `38;2;255;105;180m`, `38;2;255;182;193m`, and `38;2;255;92;138m`, the ANSI truecolor values for hot pink `#ff69b4`, light pink `#ffb6c1`, and error pink `#ff5c8a`.
 
-- [x] **Step 2: Run the new test to verify it fails**
+- [ ] **Step 2: Run the new test to verify it fails**
 
 Run: `uv run --python 3.13 pytest -q tests/test_cli.py::test_game_panel_uses_hot_pink_palette`
 Expected: FAIL because the current panel uses cyan, lime, and coral rather than the specified pink palette.
 
-- [x] **Step 3: Define and apply the named palette in `src/main.py`**
+- [ ] **Step 3: Define and apply the named palette in `src/main.py`**
 
 Define documented module-level constants for hot pink `#ff69b4`, light pink `#ffb6c1`, error pink `#ff5c8a`, success lime `#d9ff70`, and the existing muted/separator colors. Use the constants consistently for the panel border/title, player/turn/word text, drawing, invalid feedback, and win/loss result. Do not change text, layout, prompts, or game behavior.
 
-- [x] **Step 4: Run focused and full test suites**
+- [ ] **Step 4: Run focused and full test suites**
 
 Run: `uv run --python 3.13 pytest -q tests/test_cli.py`
 Expected: all CLI tests pass, including the rendered-palette test.
@@ -230,12 +230,6 @@ Expected: all CLI tests pass, including the rendered-palette test.
 Run: `uv run --python 3.13 pytest -q`
 Expected: all tests pass.
 
-- [x] **Step 5: Record verification**
+- [ ] **Step 5: Record verification**
 
 Record the focused and full-suite results in this follow-up section and mark completed steps.
-
-Verification:
-- `uv run --python 3.13 pytest -q tests/test_cli.py::test_game_panel_uses_hot_pink_palette` — failed as expected before implementation because the rendered panel contained cyan (`38;2;69;214;198m`) instead of hot pink.
-- `uv run --python 3.13 pytest -q tests/test_cli.py` — 7 passed.
-- `uv run --python 3.13 pytest -q` — 16 passed.
-- A forced-truecolor CLI run confirmed the win result remains lime and follows the final board.

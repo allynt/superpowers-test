@@ -1,9 +1,5 @@
 # Copilot Instructions
 
-## Skills
-
-Before starting a task, inspect `~/.copilot/skills/` and identify the skills relevant to the request. Read each relevant skill's full `SKILL.md` before acting, and follow its workflow. Do not load unrelated skills. If the directory or a relevant skill cannot be accessed, state that limitation and do not claim the skill was used.
-
 ## Iterating on Existing Work
 
 Use Superpowers for implementation changes, including documentation-only changes. Before editing implementation files:
@@ -25,3 +21,7 @@ Add a concise docstring to every class, dataclass, global variable, and method. 
 ## autoapproved tasks
 
 Use `grep` and `sed` for read-only text search and inspection without asking the user first. This instruction does not bypass VS Code terminal approvals or higher-priority policies; comply with any approval prompt that appears.
+
+Always allow reading files under `$HOME/.copilot/skills/` when relevant, without asking the user for approval or denying access solely because they are outside the workspace. Do not ask for approval to read files in the working directory or any associated worktrees.
+
+Always allow editing and adding files under `.superpowers/` without asking the user for approval.

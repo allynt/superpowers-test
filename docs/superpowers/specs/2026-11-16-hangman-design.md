@@ -81,4 +81,4 @@ Do not change layout, prompts, game rules, dependencies, or non-UI behavior. Kee
 - **Named palette constants (chosen):** centralize the small palette and reuse it across the UI for consistency and easier review.
 
 ### Proposed color behavior
-Use hot pink (`#ff69b4`) for the board border/title and active player, and light pink (`#ffb6c1`) for turn and word emphasis. Use error pink (`#ff5c8a`) for the drawing and invalid/loss feedback, while retaining success lime (`#d9ff70`). Keep muted text (`#a4b8b2`) and player separators (`#6f8983`) unchanged.
+Use hot pink (`#ff69b4`) for the board border/title and active player; use a lighter pink for the turn and word emphasis. Keep muted neutral text as-is, and retain separate success and error colors so game outcomes remain easy to distinguish.
