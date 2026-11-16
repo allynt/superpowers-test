@@ -1,3 +1,4 @@
+from io import StringIO
 from unittest.mock import MagicMock
 
 import click
@@ -5,6 +6,7 @@ from click.testing import CliRunner
 from rich.console import Console
 
 import main
+from game import GameState
 
 
 def invoke_game(monkeypatch, word, args, guesses):
@@ -54,6 +56,18 @@ def test_player_option_is_required():
 
     assert result.exit_code != 0
     assert "--player" in result.output
+
+
+def test_game_panel_uses_hot_pink_palette():
+    output = StringIO()
+    console = Console(file=output, force_terminal=True, color_system="truecolor")
+
+    console.print(main._render_game(GameState("cat", ("Solo",)), []))
+
+    rendered = output.getvalue()
+    assert "38;2;255;105;180m" in rendered
+    assert "38;2;255;182;193m" in rendered
+    assert "38;2;255;92;138m" in rendered
 
 
 def test_live_display_updates_board_and_exits_before_result(monkeypatch):
