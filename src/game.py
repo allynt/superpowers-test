@@ -3,11 +3,16 @@ from typing import Literal, TypeAlias
 
 
 MAX_MISSES = 8
+"""Maximum number of incorrect guesses before the game ends."""
+
 GuessStatus: TypeAlias = Literal["correct", "incorrect", "invalid", "won", "lost"]
+"""Possible outcomes of submitting a guess."""
 
 
 @dataclass(frozen=True)
 class GuessResult:
+    """Outcome of one player's guess."""
+
     status: GuessStatus
     player: str
     guess: str
@@ -15,6 +20,8 @@ class GuessResult:
 
 @dataclass
 class GameState:
+    """Track a Hangman round and the players' guesses."""
+
     word: str
     players: tuple[str, ...]
     miss_count: int = field(default=0, init=False)
@@ -25,6 +32,7 @@ class GameState:
     _turn_index: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
+        """Normalize and validate the secret word and player names."""
         self.word = self.word.strip().lower()
         self.players = tuple(self.players)
         if not self.word or not self.word.isalpha():
@@ -34,13 +42,16 @@ class GameState:
 
     @property
     def current_player(self) -> str:
+        """Return the player whose turn it is."""
         return self.players[self._turn_index]
 
     @property
     def masked_word(self) -> str:
+        """Return the secret word with unguessed letters masked."""
         return "".join(letter if letter in self._guessed_letters else "_" for letter in self.word)
 
     def submit_guess(self, guess: str) -> GuessResult:
+        """Record a guess and return its outcome."""
         player = self.current_player
         normalized = guess.strip().lower() if isinstance(guess, str) else ""
 
@@ -73,4 +84,5 @@ class GameState:
         return GuessResult("incorrect", player, normalized)
 
     def _advance_turn(self) -> None:
+        """Move play to the next player in rotation."""
         self._turn_index = (self._turn_index + 1) % len(self.players)

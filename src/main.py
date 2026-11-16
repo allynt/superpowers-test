@@ -18,9 +18,11 @@ HANGMAN_STAGES = (
     "  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n_/    |\n========",
     "  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n_/  \\_|\n========",
 )
+"""Hangman drawings indexed by the number of misses."""
 
 
 def _render_game(console: Console, game: GameState, wrong_guesses: list[str]) -> None:
+    """Render the current round state in the terminal."""
     player_names = Text("PLAYERS  ", style="bold #45d6c6")
     for index, player in enumerate(game.players):
         if index:
@@ -52,6 +54,7 @@ def _render_game(console: Console, game: GameState, wrong_guesses: list[str]) ->
 @click.command()
 @click.option("--player", "players", multiple=True, required=True, metavar="NAME")
 def main(players: tuple[str, ...]) -> None:
+    """Run one Hangman round for the supplied players."""
     game = GameState(choose_word(), players)
     console = Console()
     wrong_guesses: list[str] = []
