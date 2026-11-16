@@ -65,5 +65,5 @@ Keep the current Hangman board in place between guesses instead of appending a n
 - Leave the final board visible, stop the live display, then print the existing win/loss result.
 - Add CLI tests for the live update flow and retain existing tests for game rules and final output.
 
-### Remaining to the builder
-Verify Rich `Live` behavior with interactive and captured CLI output. If Click prompts or invalid-guess feedback disturb the live board, adjust their placement without changing the decisions above.
+### Verification
+CLI tests verify Live creation and updates, invalid-guess feedback, final-result ordering, and readable captured output. The implementation uses Rich's normal terminal Live rendering without an alternate-screen mode.

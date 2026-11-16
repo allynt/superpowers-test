@@ -1,5 +1,6 @@
 import click
 from rich.console import Console, Group
+from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
@@ -21,8 +22,8 @@ HANGMAN_STAGES = (
 """Hangman drawings indexed by the number of misses."""
 
 
-def _render_game(console: Console, game: GameState, wrong_guesses: list[str]) -> None:
-    """Render the current round state in the terminal."""
+def _render_game(game: GameState, wrong_guesses: list[str]) -> Panel:
+    """Build the panel for the current round state."""
     player_names = Text("PLAYERS  ", style="bold #45d6c6")
     for index, player in enumerate(game.players):
         if index:
@@ -41,13 +42,11 @@ def _render_game(console: Console, game: GameState, wrong_guesses: list[str]) ->
         Text(f"WORD  {' '.join(game.masked_word.upper())}", style="bold #d9ff70"),
         Text(f"MISSES  {game.miss_count}/8    WRONG  {wrong}", style="#a4b8b2"),
     )
-    console.print(
-        Panel(
-            content,
-            title=Text("HANGMAN // ROUND 01", style="bold #45d6c6"),
-            border_style="#45d6c6",
-            padding=(1, 2),
-        )
+    return Panel(
+        content,
+        title=Text("HANGMAN // ROUND 01", style="bold #45d6c6"),
+        border_style="#45d6c6",
+        padding=(1, 2),
     )
 
 
@@ -59,25 +58,24 @@ def main(players: tuple[str, ...]) -> None:
     console = Console()
     wrong_guesses: list[str] = []
 
-    while not game.finished:
-        _render_game(console, game, wrong_guesses)
-        guess = click.prompt(f"{game.current_player}'s guess", type=str)
-        result = game.submit_guess(guess)
+    with Live(_render_game(game, wrong_guesses), console=console) as live:
+        while not game.finished:
+            guess = click.prompt(f"{game.current_player}'s guess", type=str)
+            result = game.submit_guess(guess)
 
-        if result.status == "invalid":
-            console.print(Text("Enter a new letter or word.", style="#ff806b"))
-            continue
+            if result.status == "invalid":
+                console.print(Text("Enter a new letter or word.", style="#ff806b"))
+                continue
 
-        if result.status == "incorrect":
-            wrong_guesses.append(result.guess)
+            if result.status == "incorrect":
+                wrong_guesses.append(result.guess)
 
-        if result.status in ("won", "lost"):
-            _render_game(console, game, wrong_guesses)
-            if result.status == "won":
-                console.print(Text(f"{result.player} wins! The word was {game.word}.", style="bold #d9ff70"))
-            else:
-                console.print(Text(f"Out of guesses. The word was {game.word}.", style="bold #ff806b"))
-            return
+            live.update(_render_game(game, wrong_guesses))
+
+    if game.winner is not None:
+        console.print(Text(f"{game.winner} wins! The word was {game.word}.", style="bold #d9ff70"))
+    else:
+        console.print(Text(f"Out of guesses. The word was {game.word}.", style="bold #ff806b"))
 
 
 if __name__ == "__main__":

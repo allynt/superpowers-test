@@ -147,7 +147,7 @@ Expected: all game, word-selection, and CLI tests pass.
 
 ---
 
-### Follow-up Task: Keep the Hangman Board Persistent (#3)
+### Task 4: Keep the Hangman Board Persistent (#3)
 
 **Files:**
 - Modify: `src/main.py`
@@ -165,23 +165,28 @@ Expected: all game, word-selection, and CLI tests pass.
 - The final board update precedes the existing win/loss result; record Live updates, context exit, and result printing in order.
 - Existing one-player and multiplayer rules remain unchanged; retain the current CLI and game-rule tests.
 
-- [ ] **Step 1: Add a CLI test for unconditional Live updates**
+- [x] **Step 1: Add a CLI test for unconditional Live updates**
 
 In `tests/test_cli.py`, add `test_live_display_updates_board_and_exits_before_result`. Mock `main.Live` and `main.Console`, then invoke the game through `CliRunner` with a wrong guess followed by a correct whole-word guess. Assert `Live` is constructed even for captured output, its update method receives both valid guesses, and its context exits before the winner is printed. Also add `test_invalid_guess_feedback_remains_visible_with_live_output`, using a malformed guess followed by a win and asserting the invalid-guess feedback and result remain visible.
 
-- [ ] **Step 2: Run the new test to verify it fails**
+- [x] **Step 2: Run the new test to verify it fails**
 
 Run: `uv run --python 3.13 pytest -q tests/test_cli.py::test_live_display_updates_board_and_exits_before_result`
 Expected: FAIL because the current CLI does not create or update a Rich `Live` display.
 
-- [ ] **Step 3: Refactor board rendering and add Rich Live in `src/main.py`**
+- [x] **Step 3: Refactor board rendering and add Rich Live in `src/main.py`**
 
 Change `_render_game` to return a `Panel`. Create `Live` with the initial panel and existing `Console`; update it after each valid guess, including the terminal guess. Keep invalid-guess feedback outside the panel, and print the final result only after the Live context has exited. Do not add a TTY check or change game rules.
 
-- [ ] **Step 4: Verify CLI behavior and the full test suite**
+- [x] **Step 4: Verify CLI behavior and the full test suite**
 
 Run: `uv run --python 3.13 pytest -q tests/test_cli.py tests/test_game.py`
 Expected: all selected tests pass, including the Live update test and existing win/loss and multiplayer tests.
 
 Run: `uv run --python 3.13 pytest -q`
 Expected: all game, word-selection, and CLI tests pass.
+Verification:
+- The new Live lifecycle test failed before implementation because no Live display was created.
+- `uv run --python 3.13 pytest -q tests/test_cli.py tests/test_game.py` — 14 passed.
+- `uv run --python 3.13 pytest -q` — 15 passed.
+- A real `CliRunner` invocation with Rich Live confirmed captured output includes the final Hangman board before the result.
