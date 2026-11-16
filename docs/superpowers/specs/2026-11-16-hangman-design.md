@@ -35,3 +35,35 @@ Build a fun solo or multiplayer terminal Hangman game as a hands-on way to learn
 
 ## Remaining to the builder
 Choose a compact curated word list, define the ordered body-part drawing, and write focused tests for single-player flow, multiplayer turn order, guesses, win/loss conditions, and input validation.
+
+## Follow-up: Persistent Terminal Board (#3)
+
+### Intent
+Keep the current Hangman board in place between guesses instead of appending a new panel to terminal scrollback each turn.
+
+### Goals
+- Update the existing Rich board after each guess while preserving its current information and visual style.
+- Preserve single-player and multiplayer rules, Click prompts, invalid-guess feedback, and final win/loss messages.
+- Use Rich `Live` on every run and rely on its handling of non-terminal output rather than adding a separate TTY check.
+
+### Non-goals and anti-goals
+- Do not add a full-screen/alternate-screen interface, change game rules, or add dependencies.
+- Do not hide the final result or make piped/CLI-test output unreadable.
+
+### Constraints
+- Keep the change in the existing Click/Rich presentation layer; game rules remain in `src/game.py`.
+- Preserve the current board contents, colors, prompts, and result text.
+
+### Approaches
+- **Rich `Live` in the normal terminal (chosen):** update the existing panel in place, retaining normal prompt and result output. This matches the request and existing Rich dependency.
+- **Full-screen/alternate-screen display:** could integrate all interaction into a separate screen, but conflicts with the existing non-goal of a full-screen application and risks hiding the final result.
+- **Manual terminal control sequences:** avoid an abstraction but duplicate terminal handling and are less portable than the existing Rich dependency.
+
+### Decisions and proposed behavior
+- Use `rich.live.Live` for the board on every run; allow Rich to determine how it renders when the output is not a terminal.
+- Keep Click's guess prompt and invalid-guess feedback as ordinary terminal output while updating the board in place.
+- Leave the final board visible, stop the live display, then print the existing win/loss result.
+- Add CLI tests for the live update flow and retain existing tests for game rules and final output.
+
+### Verification
+CLI tests verify Live creation and updates, invalid-guess feedback, final-result ordering, and readable captured output. The implementation uses Rich's normal terminal Live rendering without an alternate-screen mode.
