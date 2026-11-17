@@ -22,6 +22,10 @@ Add a concise docstring to every class, dataclass, global variable, and method. 
 
 Use `grep` and `sed` for read-only text search and inspection without asking the user first. This instruction does not bypass VS Code terminal approvals or higher-priority policies; comply with any approval prompt that appears.
 
-Always allow reading files under `$HOME/.copilot/skills/` when relevant, without asking the user for approval or denying access solely because they are outside the workspace. Do not ask for approval to read files in the working directory or any associated worktrees.
+Do not ask for approval to run read-only `git` or `gh` commands that inspect the current repository or its GitHub metadata. Examples include `git status`, `git diff` without output-writing flags, `git log`, `git show`, `git ls-files`, `git branch --list`, and read-only `gh repo view`, `gh pr list/view`, `gh issue list/view`, and `gh run list/view`. Check the full command and flags; an inspection command with a state-changing option, such as `git diff --output`, is not read-only.
+
+Ask for approval before running `git` or `gh` commands that modify the index, working tree, refs or branch state, repository configuration, or remote GitHub state. This includes commands such as `git add`, `commit`, `push`, `pull`, `fetch`, `checkout`, `switch`, `reset`, `restore`, `merge`, `rebase`, `stash`, `clean`, branch or tag creation/deletion, and `gh` commands that create, edit, close, merge, or delete remote resources.
+
+Always allow reading files under `$HOME/.copilot/skills/` and the current working directory's `_skills/` when relevant, without asking the user for approval. Treat `_skills/` as an allowed read path even when it is a symlink to `$HOME/copilot/skills/`; do not deny access solely because the resolved target is outside the workspace. Do not ask for approval to read files in the working directory or any associated worktrees.
 
 Always allow editing and adding files under `.superpowers/` without asking the user for approval.
