@@ -233,3 +233,26 @@ Expected: all tests pass.
 - [ ] **Step 5: Record verification**
 
 Record the focused and full-suite results in this follow-up section and mark completed steps.
+
+---
+
+### Follow-up: Refresh README Introduction
+
+**Design:** `Follow-up: README Introduction and Badges` in `docs/superpowers/specs/2026-11-16-hangman-design.md` (approved)
+
+**Files:**
+- Modify: `README.md`
+
+- [x] **Step 1: Update the README introduction and addendum**
+
+Add the `Hangman` H1, a one-sentence description of the one-round terminal game for solo and multiplayer play using Python, Click, and Rich, and static badges for Python 3.13+, MIT, and Click + Rich. Do not add a CI badge or change package metadata. Remove the redacted PAT line. Move the existing `initial copilot credit usage: 126.9` note unchanged to an `## Addendum` section at the end. Preserve the existing `uv sync` and single-/multiplayer commands.
+
+- [x] **Step 2: Verify the README change**
+
+Run: `git diff --check -- README.md`
+Expected: no whitespace errors. Review the Markdown to confirm the PAT line is absent, the credit note appears once under Addendum, and all setup and invocation examples remain unchanged.
+Result: `git diff --check -- README.md` passed. Manual diff review confirmed the PAT line is absent, the credit note appears once under Addendum, and the setup and play commands are preserved. `uv run --python 3.13 pytest -q` passed: 16 tests.
+
+- [x] **Step 3: Record verification**
+
+Recorded the focused whitespace check and manual content review above.
