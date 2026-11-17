@@ -9,6 +9,8 @@ One-round terminal Hangman for solo and multiplayer play, built with Python, Cli
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 ![Built with Click and Rich](https://img.shields.io/badge/Built%20with-Click%20%2B%20Rich-orange)
 
+![Mid-game Hangman board showing Mira's turn, two misses, and a partially revealed word](docs/hangman-midgame.png)
+
 ## Play
 
 Install the project dependencies:
@@ -32,3 +34,5 @@ uv run python src/main.py --player Mira --player Eli
 ## Addendum
 
 initial copilot credit usage: 126.9
+final copilot credit usage: 579.7
+~7% of my allocated credits
