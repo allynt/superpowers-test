@@ -1,0 +1,3 @@
+# Git ignore patterns match paths, not filesystem types; list each symlink path.
+/superpowers
+!.gitignore

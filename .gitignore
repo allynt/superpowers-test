@@ -179,5 +179,4 @@ pyrightconfig.json
 
 .env
 .superpowers/
-/_skills
 !.python-version
