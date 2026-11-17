@@ -82,3 +82,24 @@ Do not change layout, prompts, game rules, dependencies, or non-UI behavior. Kee
 
 ### Proposed color behavior
 Use hot pink (`#ff69b4`) for the board border/title and active player; use a lighter pink for the turn and word emphasis. Keep muted neutral text as-is, and retain separate success and error colors so game outcomes remain easy to distinguish.
+
+## Follow-up: README Introduction and Badges
+
+### Intent and goals
+Give repository visitors an immediate, accurate understanding of the Hangman project and its requirements while keeping the existing installation and play instructions easy to find.
+
+### Non-goals and constraints
+- Keep the change limited to `README.md`; do not change package metadata or add CI configuration.
+- Remove the redacted PAT line.
+- Preserve the existing Copilot credit-usage note, moving it to an `Addendum` section at the end without changing its wording or value.
+- Preserve the `uv sync` setup and single-player/multiplayer invocations.
+
+### Approaches
+- **Focused README introduction (chosen):** add a title, one-sentence project description, and factual badges while preserving the existing instructions and relocating the credit note.
+- **Broader repository polish:** also edit package metadata or create CI workflows for additional badges. This exceeds the README request and would add unrelated scope.
+
+### Proposed content
+Use `Hangman` as the title and describe the project as a one-round terminal Hangman game for solo and multiplayer play, built with Python, Click, and Rich. Add badges for Python 3.13+, MIT license, and Click + Rich. Do not add a CI badge because the repository has no CI workflow.
+
+### Approval status
+Approved by the user on 2026-11-17.
