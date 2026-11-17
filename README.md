@@ -33,6 +33,8 @@ uv run python src/main.py --player Mira --player Eli
 
 ## Addendum
 
-initial copilot credit usage: 126.9
-final copilot credit usage: 579.7
-~7% of my allocated credits
+| Note | Value |
+| --- | ---: |
+| initial copilot credit usage | 126.9 |
+| final copilot credit usage | 579.7 |
+| allocated credits used | ~7%  |
