@@ -42,6 +42,12 @@ The board occupies a stable region and remains visible while the active prompt a
 
 The builder may choose the specific Rich or terminal-control mechanism, provided it meets these behaviors, adds no dependency, and restores terminal state reliably.
 
+### Implemented rendering/input coordination
+
+Interactive input uses synchronous Rich `LiveRender` frames rather than a running `Live` context. Each frame reserves room for the prompt and its echoed newline. Once input completes, Rich cursor controls remove that frame and the echoed prompt, then retain the completed prompt/answer as ordinary terminal history before rendering the next state. Empty input repeats the prompt without submitting a guess, preserving Click's existing behavior.
+
+The cursor remains visible and terminal input modes are not changed, so EOF and interrupts leave the terminal usable. If either input or output is non-interactive, the CLI keeps ordinary Click prompts and prints the final board without cursor positioning.
+
 Non-interactive output does not need an in-place display; it should remain readable and include the final board and result. The supported interactive target is a terminal that Rich identifies as interactive and capable of cursor control. At smaller or resized dimensions, use Rich's normal overflow behavior while keeping input available and avoiding stale frames.
 
 ## Verification
