@@ -8,7 +8,7 @@ One-round terminal Hangman for solo and multiplayer play, built with Python, Cli
 [![Python 3.13+](https://img.shields.io/badge/Python-3.13%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Tests](https://github.com/allynt/superpowers-test/actions/workflows/tests.yml/badge.svg)](https://github.com/allynt/superpowers-test/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-![Built with Click and Rich](https://img.shields.io/badge/Built%20with-Rich-orange)
+[![Built with Click and Rich](https://img.shields.io/badge/Built%20with-Rich-orange)](https://rich.readthedocs.io/en/latest/introduction.html)
 
 ![Mid-game Hangman board showing Mira's turn, two misses, and a partially revealed word](docs/hangman-midgame.png)
 
