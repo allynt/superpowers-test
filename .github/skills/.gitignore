@@ -1,1 +1,4 @@
+# include any project-specific skill
+# ignore the following symlinked local skill
+/antivibe
 /superpowers
